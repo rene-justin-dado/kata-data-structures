@@ -21,7 +21,7 @@ function getContacts (asArray) {
   }
 
   if (asArray) {
-    return contacts.keys().map(function (key) {
+    return Object.keys(contacts).map(function (key) {
       var id = { id: key }
       return Object.assign(id, contacts[key])
     })
@@ -33,12 +33,12 @@ test('getValue gets a nested object by key', function (t) {
   var contacts = getContacts()
   var expected = { address: '742 Evergreen Terrace', name: 'Marge Simpson', age: 47 }
   var actual = getValue(contacts, '123')
-  t.is(actual, expected)
+  t.deepEqual(actual, expected)
 })
 
 test('map and getAddress return the address property from objects in an array', function (t) {
   var contacts = getContacts(true)
-  var expected = [ '742 Evergreen Terrace', 'Bag End', 'Wayne Manor']
+  var expected = [ '742 Evergreen Terrace', 'Bag End', 'Wayne Manor', 'Skull Island', 'Wayne Manor']
   var actual = contacts.map(getAddress)
   t.deepEqual(actual, expected)
 })
@@ -52,7 +52,7 @@ test('where finds an object by id in an array', function (t) {
 
 test('where finds an object by property', function (t) {
   var contacts = getContacts(true)
-  var expected = { address: 'Skull Island', name: 'Dr Evil', age: 51 }
+  var expected = { id: '126', address: 'Skull Island', name: 'Dr Evil', age: 51 }
   var actual = where(contacts, { address: 'Skull Island' })
   t.deepEqual(actual, expected)
 })
@@ -61,12 +61,12 @@ test('where returns an array of the correct length', function (t) {
   var contacts = getContacts(true)
   var expected = 2
   var actual = where(contacts, { age: 78 }).length
-  t.equal(actual, expected)
+  t.is(actual, expected)
 })
 
 test('where finds objects with two search properties', function (t) {
   var contacts = getContacts(true)
-  var expected = { address: 'Wayne Manor', name: 'Alfred', age: 78 }
+  var expected = { id: '127', address: 'Wayne Manor', name: 'Alfred', age: 78 }
   var actual = where(contacts, { age: 78, address: 'Wayne Manor' })
   t.deepEqual(actual, expected)
 })
@@ -128,4 +128,3 @@ test('getFirst & getLast', function (t) {
   t.is(positions.getLast(keys), 'e', 'getLast gets the last item in an array')
   t.is(positions.getLast(keys.splice(0, 3)), 'c', 'getLast always gets the last item in an array')
 })
-
