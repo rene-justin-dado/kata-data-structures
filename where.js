@@ -1,6 +1,5 @@
 module.exports = where
 
-//            contacts  {id:'123'}
 function where (arr, propertiesObj) {
   var result = arr.filter(function (element) {
     for (var prop in propertiesObj) {
